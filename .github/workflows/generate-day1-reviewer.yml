@@ -1,9 +1,9 @@
 name: Generate Day 1 IT Reviewer DOCX
 
 on:
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - "chatgpt/day1-it-reviewer"
     paths-ignore:
       - "Day_1_IT_Fundamentals_Intensive_Reviewer.docx"
 
@@ -17,7 +17,7 @@ jobs:
       - name: Check out reviewer branch
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.ref }}
+          ref: ${{ github.ref_name }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -40,5 +40,5 @@ jobs:
             echo "No generated changes to commit."
           else
             git commit -m "Generate Day 1 reviewer DOCX [skip ci]"
-            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+            git push origin HEAD:${{ github.ref_name }}
           fi
